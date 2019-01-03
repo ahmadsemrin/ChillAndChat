@@ -1,6 +1,7 @@
 package com.atypon.asemrin.chillchat.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.atypon.asemrin.chillchat.R;
+import com.atypon.asemrin.chillchat.activity.MessageActivity;
 import com.atypon.asemrin.chillchat.model.User;
 import com.bumptech.glide.Glide;
 
@@ -33,7 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = users.get(position);
+        final User user = users.get(position);
         holder.textViewFullName.setText(user.getFullName());
         holder.textViewUsername.setText(user.getUsername());
         holder.textViewEmail.setText(user.getEmail());
@@ -42,6 +44,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         } else {
             Glide.with(context).load(user.getImageURL()).into(holder.imageViewProfileImage);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("userID", user.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
