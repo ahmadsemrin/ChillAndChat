@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import com.atypon.asemrin.chillchat.R;
 import com.atypon.asemrin.chillchat.fragments.ChatFragment;
+import com.atypon.asemrin.chillchat.fragments.ProfileFragment;
 import com.atypon.asemrin.chillchat.fragments.UserFragment;
 import com.atypon.asemrin.chillchat.model.User;
 import com.bumptech.glide.Glide;
@@ -34,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView textViewUsername;
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
 
     private ProgressDialog progressDialog;
 
@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         String userID = firebaseUser.getUid();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -95,6 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
         viewPagerAdapter.addFragment(new UserFragment(), "Users");
+        viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
         viewPager.setAdapter(viewPagerAdapter);
 
