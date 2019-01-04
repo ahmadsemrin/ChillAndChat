@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView profile_image;
-    private TextView textViewUsername;
+    private TextView textViewFullName;
 
     private FirebaseAuth firebaseAuth;
 
@@ -48,18 +48,11 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
         profile_image = findViewById(R.id.profile_image);
-        textViewUsername = findViewById(R.id.textViewUsername);
+        textViewFullName = findViewById(R.id.textViewFullName);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                progressDialog.dismiss();
-            }
-        }, 1500); // 1500 milliseconds delay
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -75,12 +68,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                textViewUsername.setText(user.getUsername());
+                textViewFullName.setText(user.getFullName());
                 if (user.getImageURL().equals("default")) {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
                     Glide.with(ProfileActivity.this).load(user.getImageURL()).into(profile_image);
                 }
+
+                progressDialog.dismiss();
             }
 
             @Override
