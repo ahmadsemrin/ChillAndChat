@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,40 +12,72 @@
             android:id="@+id/profileImage"
             android:src="@mipmap/ic_launcher" />
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp">
-
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewFullName"
+                android:layout_toRightOf="@id/profileImage"
+                android:layout_toEndOf="@id/profileImage"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="Full Name"
                 android:textSize="15dp"
-                android:textColor="@android:color/white"
-                android:layout_centerVertical="true" />
+                android:textColor="@android:color/white" />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewUsername"
+                android:layout_toRightOf="@id/profileImage"
+                android:layout_toEndOf="@id/profileImage"
+                android:layout_below="@id/textViewFullName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="Username"
                 android:textSize="10dp"
-                android:textColor="@android:color/white"
-                android:layout_centerVertical="true" />
+                android:textColor="@android:color/white" />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewEmail"
+                android:layout_toRightOf="@id/profileImage"
+                android:layout_toEndOf="@id/profileImage"
+                android:layout_below="@id/textViewUsername"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="Email"
                 android:textSize="10dp"
-                android:textColor="@android:color/white"
-                android:layout_centerVertical="true" />
+                android:textColor="@android:color/white" />
 
-    </LinearLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:id="@+id/circleImageViewStatusOn"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
+            android:layout_toRightOf="@id/profileImage"
+            android:layout_toEndOf="@id/profileImage"
+            android:layout_below="@id/textViewFullName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginStart="-10dp"
+            app:civ_border_width="10dp"
+            app:civ_border_color="#05df29" />
 
-</LinearLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:id="@+id/circleImageViewStatusOff"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
+            android:layout_toRightOf="@id/profileImage"
+            android:layout_toEndOf="@id/profileImage"
+            android:layout_below="@id/textViewFullName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginStart="-10dp"
+            app:civ_border_width="10dp"
+            app:civ_border_color="#bfbfbf" />
+
+</RelativeLayout>

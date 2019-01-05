@@ -6,15 +6,17 @@ public class User {
     private String username;
     private String email;
     private String imageURL;
+    private String status;
 
     public User() {
     }
 
-    public User(String fullName, String username, String email, String imageURL) {
+    public User(String fullName, String username, String email, String imageURL, String status) {
         this.fullName = fullName;
         this.username = username;
         this.email = email;
         this.imageURL = imageURL;
+        this.status = status;
     }
 
     public String getId() {
@@ -37,6 +39,10 @@ public class User {
         return imageURL;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -55,5 +61,9 @@ public class User {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -28,6 +28,7 @@ import com.google.firebase.database.*;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -35,6 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView textViewFullName;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
 
     private ProgressDialog progressDialog;
 
@@ -60,10 +63,10 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseUser = firebaseAuth.getCurrentUser();
         String userID = firebaseUser.getUid();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,8 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout) {
             firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
             return true;
         }
@@ -149,5 +151,26 @@ public class ProfileActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+    }
+
+    private void status(String status) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        HashMap<String, Object> userInfo = new HashMap<>();
+        userInfo.put("status", status);
+        databaseReference.updateChildren(userInfo);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        status("offline");
     }
 }

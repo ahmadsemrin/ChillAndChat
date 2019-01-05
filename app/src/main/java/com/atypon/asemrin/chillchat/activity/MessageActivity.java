@@ -30,6 +30,7 @@ public class MessageActivity extends AppCompatActivity {
     private TextView textViewUsername;
     private EditText editTextMessage;
     private RecyclerView recyclerView;
+    private TextView textViewEmpty;
 
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
@@ -51,7 +52,8 @@ public class MessageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(MessageActivity.this, ProfileActivity.class).setFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
@@ -59,6 +61,7 @@ public class MessageActivity extends AppCompatActivity {
         imageButtonSend = findViewById(R.id.imageButtonSend);
         textViewUsername = findViewById(R.id.textViewUsername);
         editTextMessage = findViewById(R.id.editTextMessage);
+        textViewEmpty = findViewById(R.id.textViewEmpty);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -136,6 +139,12 @@ public class MessageActivity extends AppCompatActivity {
                     messageAdapter = new MessageAdapter(MessageActivity.this, chatList, imageURL);
                     recyclerView.setAdapter(messageAdapter);
                 }
+
+                if (chatList.size() == 0) {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    textViewEmpty.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -143,5 +152,26 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void status(String status) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        HashMap<String, Object> userInfo = new HashMap<>();
+        userInfo.put("status", status);
+        databaseReference.updateChildren(userInfo);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        status("offline");
     }
 }

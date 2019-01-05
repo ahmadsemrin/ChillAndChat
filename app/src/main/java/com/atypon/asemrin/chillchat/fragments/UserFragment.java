@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.TextView;
 import com.atypon.asemrin.chillchat.R;
 import com.atypon.asemrin.chillchat.adapter.UserAdapter;
 import com.atypon.asemrin.chillchat.model.User;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class UserFragment extends Fragment {
     private RecyclerView recyclerView;
+    private TextView textViewEmpty;
 
     private UserAdapter userAdapter;
     private List<User> users;
@@ -33,6 +35,8 @@ public class UserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        textViewEmpty = view.findViewById(R.id.textViewEmpty);
 
         users = new ArrayList<>();
 
@@ -58,7 +62,13 @@ public class UserFragment extends Fragment {
                     }
                 }
 
-                userAdapter = new UserAdapter(getContext(), users);
+                if (users.size() == 0) {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    textViewEmpty.setVisibility(View.GONE);
+                }
+
+                userAdapter = new UserAdapter(getContext(), users, false);
                 recyclerView.setAdapter(userAdapter);
             }
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.TextView;
 import com.atypon.asemrin.chillchat.R;
 import com.atypon.asemrin.chillchat.adapter.UserAdapter;
 import com.atypon.asemrin.chillchat.model.Chat;
@@ -16,12 +17,14 @@ import com.atypon.asemrin.chillchat.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
     private RecyclerView recyclerView;
+    private TextView textViewEmpty;
 
     private UserAdapter userAdapter;
     private List<User> users;
@@ -39,6 +42,8 @@ public class ChatFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        textViewEmpty = view.findViewById(R.id.textViewEmpty);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -60,7 +65,13 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
-                readChats();
+                if (usersList.size() != 0) {
+                    textViewEmpty.setVisibility(View.GONE);
+
+                    readChats();
+                } else {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -99,7 +110,7 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
-                userAdapter = new UserAdapter(getContext(), users);
+                userAdapter = new UserAdapter(getContext(), users, true);
                 recyclerView.setAdapter(userAdapter);
             }
 
