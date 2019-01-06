@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.atypon.asemrin.chillchat.R;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignUp;
+    private TextView textViewForgotPassword;
 
     private FirebaseAuth firebaseAuth;
 
@@ -48,9 +50,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextEmail = findViewById(R.id.textViewEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         textViewSignUp = findViewById(R.id.textViewSignUp);
+        textViewForgotPassword = findViewById(R.id.textViewForgot);
 
         buttonRegister.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
+        textViewForgotPassword.setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +65,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (view == textViewSignUp) {
             startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+        }
+
+        if (view == textViewForgotPassword) {
+            startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
         }
     }
 
