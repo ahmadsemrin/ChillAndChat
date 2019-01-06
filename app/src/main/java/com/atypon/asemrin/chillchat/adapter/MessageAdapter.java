@@ -13,6 +13,7 @@ import com.atypon.asemrin.chillchat.model.Chat;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -56,6 +57,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         } else {
             Glide.with(context).load(imageURL).into(holder.imageViewProfileImage);
         }
+
+        if (position == chatList.size() - 1) {
+            if (chat.isSeen()) {
+                holder.textViewSeen.setText("Seen");
+            } else {
+                holder.textViewSeen.setText("Delivered");
+            }
+        } else {
+            holder.textViewSeen.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -66,12 +77,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewMessage;
         public ImageView imageViewProfileImage;
+        public TextView textViewSeen;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewMessage = itemView.findViewById(R.id.textViewMessage);
             imageViewProfileImage = itemView.findViewById(R.id.profile_image);
+            textViewSeen = itemView.findViewById(R.id.textViewSeen);
         }
     }
 

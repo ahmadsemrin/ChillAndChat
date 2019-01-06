@@ -40,6 +40,8 @@ public class MessageActivity extends AppCompatActivity {
 
     private Intent intent;
 
+    private ValueEventListener seenListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +99,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (user.getImageURL().equals("default")) {
                     profileImage.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Glide.with(MessageActivity.this).load(user.getImageURL()).into(profileImage);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileImage);
                 }
 
                 readMessages(firebaseUser.getUid(), userID, user.getImageURL());
@@ -108,6 +110,8 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+        seenMessage(userID);
     }
 
     private void sendMessage(String sender, String receiver, String message) {
@@ -117,6 +121,7 @@ public class MessageActivity extends AppCompatActivity {
         messageInfo.put("sender", sender);
         messageInfo.put("receiver", receiver);
         messageInfo.put("message", message);
+        messageInfo.put("seen", false);
 
         databaseReference.child("Chats").push().setValue(messageInfo);
     }
@@ -161,6 +166,28 @@ public class MessageActivity extends AppCompatActivity {
         databaseReference.updateChildren(userInfo);
     }
 
+    private void seenMessage(final String userId) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
+        seenListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userId)) {
+                        HashMap<String, Object> messageInfo = new HashMap<>();
+                        messageInfo.put("seen", true);
+                        snapshot.getRef().updateChildren(messageInfo);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -172,6 +199,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        databaseReference.removeEventListener(seenListener);
         status("offline");
     }
 }
