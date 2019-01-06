@@ -35,6 +35,8 @@ public class MessageActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
 
+    private String userID;
+
     private MessageAdapter messageAdapter;
     private List<Chat> chatList;
 
@@ -74,7 +76,7 @@ public class MessageActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         intent = getIntent();
-        final String userID = intent.getStringExtra("userID");
+        userID = intent.getStringExtra("userID");
 
         imageButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +126,23 @@ public class MessageActivity extends AppCompatActivity {
         messageInfo.put("seen", false);
 
         databaseReference.child("Chats").push().setValue(messageInfo);
+
+        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("ChatList")
+                .child(firebaseUser.getUid())
+                .child(userID);
+        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    chatReference.child("id").setValue(userID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void readMessages(final String myID, final String userID, final String imageURL) {
