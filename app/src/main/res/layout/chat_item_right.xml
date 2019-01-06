@@ -29,6 +29,14 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true" />
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewSeen"
+                android:layout_below="@id/textViewMessage"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
 
 </RelativeLayout>

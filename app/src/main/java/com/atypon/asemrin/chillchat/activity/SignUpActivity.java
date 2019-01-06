@@ -108,6 +108,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     userData.put("email", email);
                     userData.put("imageURL", "default");
                     userData.put("status", "offline");
+                    userData.put("search", fullName.toLowerCase());
 
                     databaseReference.setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

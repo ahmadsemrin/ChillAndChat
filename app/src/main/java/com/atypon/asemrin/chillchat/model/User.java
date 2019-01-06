@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String imageURL;
     private String status;
+    private String search;
 
     public User() {
     }
@@ -17,6 +18,7 @@ public class User {
         this.email = email;
         this.imageURL = imageURL;
         this.status = status;
+        this.search = fullName.toLowerCase();
     }
 
     public String getId() {
@@ -47,6 +49,10 @@ public class User {
         this.id = id;
     }
 
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -65,5 +71,9 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSearch() {
+        return search;
     }
 }
