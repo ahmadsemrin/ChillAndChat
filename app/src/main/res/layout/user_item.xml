@@ -89,7 +89,7 @@
             android:layout_below="@id/textViewFullName"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             android:maxLines="1" />
 
 </RelativeLayout>

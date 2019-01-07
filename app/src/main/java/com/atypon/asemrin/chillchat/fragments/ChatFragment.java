@@ -86,6 +86,12 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
+                if (users.size() == 0) {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    textViewEmpty.setVisibility(View.GONE);
+                }
+
                 userAdapter = new UserAdapter(getContext(), users, true);
                 recyclerView.setAdapter(userAdapter);
             }
