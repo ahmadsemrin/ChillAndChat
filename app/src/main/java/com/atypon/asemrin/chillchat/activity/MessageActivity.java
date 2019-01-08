@@ -127,14 +127,31 @@ public class MessageActivity extends AppCompatActivity {
 
         databaseReference.child("Chats").push().setValue(messageInfo);
 
-        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("ChatList")
+        final DatabaseReference chatReference1 = FirebaseDatabase.getInstance().getReference("ChatList")
                 .child(firebaseUser.getUid())
                 .child(userID);
-        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        chatReference1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    chatReference.child("id").setValue(userID);
+                    chatReference1.child("id").setValue(userID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference chatReference2 = FirebaseDatabase.getInstance().getReference("ChatList")
+                .child(userID)
+                .child(firebaseUser.getUid());
+        chatReference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    chatReference2.child("id").setValue(firebaseUser.getUid());
                 }
             }
 
