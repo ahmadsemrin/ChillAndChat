@@ -117,7 +117,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String sender, String receiver, String message) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> messageInfo = new HashMap<>();
         messageInfo.put("sender", sender);
